@@ -1,26 +1,28 @@
-on: [push]
-  name: Azure ARM Deploy
-  jobs:
-    build-and-deploy:
-      runs-on: ubuntu-latest
-      steps:
+name: Azure ARM Deploy
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
 
-        # Checkout code
-      - uses: actions/checkout@main
+      # Checkout code
+    - uses: actions/checkout@main
 
-        # Log into Azure
-      - uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      # Log into Azure
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-        # Deploy ARM template
-      - name: Run ARM deploy
-        uses: azure/arm-deploy@v1
-        with:
-          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-          resourceGroupName: ${{ secrets.AZURE_RG }}
-          template: ./azuredeploy.json
-          parameters: storageAccountType=Standard_LRS
+      # Deploy ARM template
+    - name: Run ARM deploy
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+        resourceGroupName: ${{ secrets.AZURE_RG }}
+        template: ./azuredeploy.json
+        parameters: storageAccountType=Standard_LRS
 
-        # output containerName variable from template
-      - run: echo ${{ steps.deploy.outputs.containerName }}
+      # output containerName variable from template
+    - run: echo ${{ steps.deploy.outputs.containerName }}
