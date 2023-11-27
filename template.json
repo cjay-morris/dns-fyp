@@ -52,6 +52,12 @@
       },
       "kind": "StorageV2",
       "properties": {}
+    },
+    {
+      "type": "Microsoft.Network/dnsZones",
+      "apiVersion": "2018-05-01",
+      "name": "test.cmorris.dev",
+      "location": "global"
     }
   ],
   "outputs": {
