@@ -43,17 +43,6 @@
   },
   "resources": [
     {
-      "type": "Microsoft.Storage/storageAccounts",
-      "apiVersion": "2022-09-01",
-      "name": "[parameters('storageAccountName')]",
-      "location": "[parameters('location')]",
-      "sku": {
-        "name": "[parameters('storageAccountType')]"
-      },
-      "kind": "StorageV2",
-      "properties": {}
-    },
-    {
       "type": "Microsoft.Network/dnsZones",
       "apiVersion": "2018-05-01",
       "name": "test.cmorris.dev",
