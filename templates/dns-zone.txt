@@ -1,0 +1,6 @@
+{
+    "type": "Microsoft.Network/dnsZones",
+    "apiVersion": "2018-05-01",
+    "name": "{{ domainName }}",
+    "location": "global"
+}

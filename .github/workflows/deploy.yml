@@ -10,6 +10,16 @@ jobs:
       # Checkout code
     - uses: actions/checkout@main
 
+      # Install Python dependencies
+    - name: Setup Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.10'
+    
+    - name: Create template.json
+      run: |
+        python3 main.py
+
       # Log into Azure
     - uses: azure/login@v1
       with:
