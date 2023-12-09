@@ -15,7 +15,7 @@ for zoneName in os.listdir("zones"):
     for record in os.listdir("zones/" + zoneName):
         recordValue = open("zones/" + zoneName + "/" + record, "r").read()
         record = recordTemplate.render(
-            recordName=record,
+            recordName=record + "." + zoneName,
             recordValue=recordValue,
             ttl=300,
             zoneName=zoneName,
