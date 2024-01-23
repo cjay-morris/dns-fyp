@@ -1,0 +1,14 @@
+{
+    "type": "Microsoft.Network/dnsZones/{{ recordType }}",
+    "apiVersion": "2018-05-01",
+    "name": "{{ recordName }}",
+    "properties": {
+        "TTL": {{ ttl }},
+        "ARecord": {
+            "a": "{{ recordValue }}"
+        }
+    },
+    "dependsOn": [
+        "[resourceId('Microsoft.Network/dnsZones', '{{ zoneName }}')]"
+    ]
+}
