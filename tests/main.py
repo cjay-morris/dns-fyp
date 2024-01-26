@@ -31,6 +31,5 @@ def test_hasAttribute():
             except AssertionError:
                 print("Record " + zoneName + " has no attribute '" + attribute + "'")
 
-# run tests
-
-test_hasAttribute()
+def printHelloWorld():
+    print("Hello World")

@@ -1,0 +1,36 @@
+@startuml
+
+skin rose
+
+title Dangling DNS Record Detection \n
+
+start
+
+if (DNS record is CNAME or NS?) then  (yes)
+    if (DNS record is a dangling CNAME?) then (yes)
+        :Recursively resolve CNAME record;
+        if (CNAME resolves to an IP address?) then (yes)
+            if (IP address is known to be safe?) then (yes)
+                #Green: DNS record is not dangling;
+            else (no)
+                #Red: Record has been taken over;
+            endif
+        else (no)
+            #Green: DNS record is not dangling;
+        #Red: DNS record is dangling;
+        endif
+    else (no)
+        :Record is NS record;
+        if (NS record is pointing to a known DNS server?) then (yes)
+            #Green: DNS record is not dangling;
+        else (no)
+            #Red: DNS record is dangling;
+        endif
+    endif
+else (no)
+    #Grey: Record is out of project scope;
+endif
+
+stop
+
+@enduml

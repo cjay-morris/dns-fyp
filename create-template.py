@@ -2,6 +2,7 @@ import os
 import json
 import yaml
 from jinja2 import Environment, FileSystemLoader
+from src.helpers.getZoneMapping import getZoneMapping
 
 env = Environment(loader=FileSystemLoader("templates/"))
 dnsTemplate = env.get_template("dns-zone.txt")
@@ -9,16 +10,6 @@ cnameTemplate = env.get_template("cname.txt")
 aTemplate = env.get_template("a.txt")
 jsonTemplate = env.get_template("template.txt")
 templateString = []
-
-def makeZoneMapping():
-    zoneMapping = {}
-    for zoneName in os.listdir("zones"):
-        zoneMapping[zoneName] = {}
-        for record in os.listdir("zones/" + zoneName):
-            recordValue = open("zones/" + zoneName + "/" + record, "r").read()
-            yamlObj = yaml.safe_load(recordValue)
-            zoneMapping[zoneName][record.replace(".yml", "")] = yamlObj
-    return zoneMapping
 
 def createZone(zoneName):
     zoneTemplate = dnsTemplate.render(
@@ -71,7 +62,7 @@ def makeTemplate(zoneMapping):
     return templateString
 
 if __name__ == "__main__":
-    mapping = makeZoneMapping()
+    mapping = getZoneMapping()
     template = makeTemplate(mapping)
     template = ",".join(template)
     with open("template.json", "w") as f:
