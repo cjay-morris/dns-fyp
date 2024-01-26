@@ -45,6 +45,14 @@ def createRecord(zoneName, recordName, recordValue, recordType, ttl=300):
             zoneName=zoneName,
             recordType=recordType
         )
+    elif recordType == "CNAME":
+        recordTemplate = cnameTemplate.render(
+            recordName=zoneName+"/"+recordName,
+            recordValue=recordValue,
+            ttl=ttl,
+            zoneName=zoneName,
+            recordType=recordType
+        )
     return recordTemplate
 
 def makeTemplate(zoneMapping):
