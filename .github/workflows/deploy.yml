@@ -24,7 +24,7 @@ jobs:
       # Create template.json
     - name: Create template.json
       run: |
-        python3 main.py
+        python3 create-template.py
 
       # Log into Azure
     - uses: azure/login@v1
