@@ -33,7 +33,6 @@ def ARecordToIPV4Array(recordValues):
         recordValue = []
         for recordValue in recordValues:
             recordValue.append({"ipv4Address": recordValue})
-    print(json.dumps(recordValues))
     return json.dumps(recordValues)
 
 def createRecord(zoneName, recordName, recordValue, recordType, ttl=300):
@@ -77,5 +76,4 @@ if __name__ == "__main__":
     template = ",".join(template)
     with open("template.json", "w") as f:
         renderedTemplate = jsonTemplate.render(resources=template)
-        # print(renderedTemplate)
         json.dump(json.loads(renderedTemplate), f, indent=4)
