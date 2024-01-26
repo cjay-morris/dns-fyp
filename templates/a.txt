@@ -4,9 +4,7 @@
     "name": "{{ recordName }}",
     "properties": {
         "TTL": {{ ttl }},
-        "ARecord": {
-            "a": "{{ recordValue }}"
-        }
+        "ARecords": {{ ipvFourArray }}
     },
     "dependsOn": [
         "[resourceId('Microsoft.Network/dnsZones', '{{ zoneName }}')]"
