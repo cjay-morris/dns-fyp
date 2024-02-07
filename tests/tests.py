@@ -22,13 +22,16 @@ def hasRequiredAttributes(obj):
 
 class TestGetZoneMapping(unittest.TestCase):
     def test_hasAttribute(self):
+        global failures
         mapping = getZoneMapping()
         for domain in mapping:
             for record in mapping[domain]:
                 recordObj = mapping[domain][record]
                 self.assertTrue(hasRequiredAttributes(recordObj), domain + " is missing required attributes")
+                
 
     def test_noDanglingRecords(self):
+        global failures
         mapping = getZoneMapping()
         for domain in mapping:
             for record in mapping[domain]:
