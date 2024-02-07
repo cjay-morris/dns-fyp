@@ -28,7 +28,6 @@ class TestGetZoneMapping(unittest.TestCase):
             for record in mapping[domain]:
                 recordObj = mapping[domain][record]
                 self.assertTrue(hasRequiredAttributes(recordObj), domain + " is missing required attributes")
-                
 
     def test_noDanglingRecords(self):
         global failures
@@ -38,7 +37,6 @@ class TestGetZoneMapping(unittest.TestCase):
                 recordObj = mapping[domain][record]
                 if recordObj["Type"] == "CNAME":
                     self.assertFalse(is_cname_record_dangling(recordObj["Value"]), domain + " is dangling. Record value is " + recordObj["Value"])
-
 
 if __name__ == "__main__":
     unittest.main()

@@ -35,6 +35,15 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+      # Delete old records
+    - name: Delete old records 🗑️
+      env:
+        AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+        AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION }}
+        AZURE_RESOURCE_GROUP: ${{ secrets.AZURE_RG }}
+      run: |
+        python3 delete-records.py
 
       # Deploy ARM template 🚀
     - name: Run ARM deploy
