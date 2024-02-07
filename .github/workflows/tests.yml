@@ -27,8 +27,7 @@ jobs:
       id: test
       run: |
         python3 tests/main.py
-      outputs:
-        output: ${{ steps.test.outputs.test }}
+      output: ${{ steps.test.outputs.test }}
 
       # Comment on issue
     - name: Comment on issue 📝

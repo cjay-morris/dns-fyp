@@ -2,6 +2,8 @@ name: Azure ARM Deploy
 
 on:
   push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -30,7 +32,7 @@ jobs:
 
       # Log into Azure
     - name: Log into Azure 🌐
-    - uses: azure/login@v1
+      uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
