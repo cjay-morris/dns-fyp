@@ -1,35 +1,42 @@
 import yaml
 import os
+import sys
+import unittest
 
-currentAttributes = {"Type", "TTL", "Value"}
+myDir = os.path.dirname(os.path.abspath(__file__))
+parentDir = os.path.split(myDir)[0]+"/src"
+if(sys.path.__contains__(parentDir)):
+    pass
+else:
+    sys.path.append(parentDir)
 
-# helpers
+from helpers.getZoneMapping import *
+from helpers.isRecordDangling import *
 
-def hasAttribute(obj, attribute):
-    for key in obj:
-        if key == attribute:
-            return True
-    return False
+requiredAttributes = ["Type", "TTL", "Value"]
 
-def getMapping():
-    mapping = {}
-    for zoneName in os.listdir("../zones"):
-        for record in os.listdir("../zones/" + zoneName):
-            recordObj = yaml.safe_load(open("../zones/" + zoneName + "/" + record))
-            mapping[zoneName] = recordObj
-    return mapping
+def hasRequiredAttributes(obj):
+    for attribute in requiredAttributes:
+        if attribute not in obj:
+            return False
+    return True
 
-# tests
+class TestGetZoneMapping(unittest.TestCase):
+    def test_hasAttribute(self):
+        mapping = getZoneMapping()
+        for domain in mapping:
+            for record in mapping[domain]:
+                recordObj = mapping[domain][record]
+                self.assertTrue(hasRequiredAttributes(recordObj), domain + " is missing required attributes")
 
-def test_hasAttribute():
-    mapping = getMapping()
-    for zoneName in mapping:
-        recordObj = mapping[zoneName]
-        for attribute in currentAttributes:
-            try:
-                assert hasAttribute(recordObj, attribute)
-            except AssertionError:
-                print("Record " + zoneName + " has no attribute '" + attribute + "'")
+    def test_noDanglingRecords(self):
+        mapping = getZoneMapping()
+        for domain in mapping:
+            for record in mapping[domain]:
+                recordObj = mapping[domain][record]
+                if recordObj["Type"] == "CNAME":
+                    self.assertFalse(is_cname_record_dangling(recordObj["Value"]), domain + " is dangling. Record value is " + recordObj["Value"])
 
-def printHelloWorld():
-    print("Hello World")
+
+if __name__ == "__main__":
+    unittest.main()
