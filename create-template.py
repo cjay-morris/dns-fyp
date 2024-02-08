@@ -2,6 +2,7 @@ import os
 import json
 import yaml
 from jinja2 import Environment, FileSystemLoader
+from src.helpers.getZoneMapping import getZoneMapping
 
 env = Environment(loader=FileSystemLoader("templates/"))
 dnsTemplate = env.get_template("dns-zone.txt")
@@ -10,31 +11,60 @@ aTemplate = env.get_template("a.txt")
 jsonTemplate = env.get_template("template.txt")
 templateString = []
 
-for zoneName in os.listdir("zones"):
-    templateString.append(dnsTemplate.render(
+def createZone(zoneName):
+    zoneTemplate = dnsTemplate.render(
         domainName=zoneName
-    ))
-    for record in os.listdir("zones/" + zoneName):
-        recordValue = open("zones/" + zoneName + "/" + record, "r").read()
-        yamlObj = yaml.safe_load(recordValue)
-        if yamlObj["Type"] == "A":
-            record = aTemplate.render(
-                recordName=zoneName+"/"+yamlObj["Type"],
-                recordValue=yamlObj["Value"],
-                ttl=300,
-                zoneName=zoneName,
-                recordType="A"
-            )
-        elif yamlObj["Type"] == "CNAME":
-            record = cnameTemplate.render(
-                recordName=zoneName+"/"+yamlObj["Type"],
-                recordValue=yamlObj["Value"],
-                ttl=300,
-                zoneName=zoneName,
-                recordType="CNAME"
-            )
-        templateString.append("\n" + record)
+    )
+    return zoneTemplate
 
-with open ("template.json", "w") as f:
-    templateString = ",".join(templateString)
-    json.dump(json.loads(jsonTemplate.render(resources=templateString)), f, indent=4)
+def ARecordToIPV4Array(recordValues):
+    if type(recordValues) == str:
+        recordValues = [{"ipv4Address": recordValues}]
+    else:
+        recordValue = []
+        for recordValue in recordValues:
+            recordValue.append({"ipv4Address": recordValue})
+    return json.dumps(recordValues)
+
+def createRecord(zoneName, recordName, recordValue, recordType, ttl=300):
+    if recordType == "A":
+        recordTemplate = aTemplate.render(
+            recordName=zoneName+"/"+recordName,
+            ipvFourArray=ARecordToIPV4Array(recordValue),
+            ttl=ttl,
+            zoneName=zoneName,
+            recordType=recordType
+        )
+    elif recordType == "CNAME":
+        recordTemplate = cnameTemplate.render(
+            recordName=zoneName+"/"+recordName,
+            recordValue=recordValue,
+            ttl=ttl,
+            zoneName=zoneName,
+            recordType=recordType
+        )
+    return recordTemplate
+
+def makeTemplate(zoneMapping):
+    templateString = []
+    for zoneName in zoneMapping:
+        zoneTemplate = createZone(zoneName)
+        templateString.append(zoneTemplate)
+        for recordName in zoneMapping[zoneName]:
+            recordValue = zoneMapping[zoneName][recordName]
+            recordType = recordValue["Type"]
+            if recordType == "A":
+                recordTemplate = createRecord(zoneName, recordName, recordValue["Value"], recordType)
+                templateString.append(recordTemplate)
+            elif recordType == "CNAME":
+                recordTemplate = createRecord(zoneName, recordName, recordValue["Value"], recordType)
+                templateString.append(recordTemplate)
+    return templateString
+
+if __name__ == "__main__":
+    mapping = getZoneMapping()
+    template = makeTemplate(mapping)
+    template = ",".join(template)
+    with open("template.json", "w") as f:
+        renderedTemplate = jsonTemplate.render(resources=template)
+        json.dump(json.loads(renderedTemplate), f, indent=4)
