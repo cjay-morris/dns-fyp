@@ -2,7 +2,7 @@ import os
 import json
 import yaml
 from jinja2 import Environment, FileSystemLoader
-from src.helpers.getZoneMapping import getZoneMapping
+from helpers.getZoneMapping import getZoneMapping
 
 env = Environment(loader=FileSystemLoader("templates/"))
 dnsTemplate = env.get_template("dns-zone.txt")
