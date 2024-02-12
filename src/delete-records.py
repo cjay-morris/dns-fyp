@@ -1,5 +1,5 @@
 import os, json
-from src.helpers.getZoneMapping import getZoneMapping
+from helpers.getZoneMapping import getZoneMapping
 from azure.mgmt.dns import DnsManagementClient
 from azure.identity import ClientSecretCredential
 
@@ -18,6 +18,10 @@ def getAllRecords(zoneName):
     records = client.record_sets.list_by_dns_zone(resourceGroup, zoneName)
     return records
 
+def deleteRecord(zoneName, recordName, recordType):
+    client = DnsManagementClient(credentials, subscription_id)
+    client.record_sets.delete(resourceGroup, zoneName, recordName, recordType)
+
 def deleteAllRecordsNotInMapping():
     zoneMapping = getZoneMapping()
     for zoneName in zoneMapping:
@@ -30,9 +34,5 @@ def deleteAllRecordsNotInMapping():
                     print("Deleted record", record.name, "of type", record.type.split("/")[1])
                 except Exception as e:
                     print(e)
-
-def deleteRecord(zoneName, recordName, recordType):
-    client = DnsManagementClient(credentials, subscription_id)
-    client.record_sets.delete(resourceGroup, zoneName, recordName, recordType)
 
 deleteAllRecordsNotInMapping()

@@ -2,15 +2,9 @@ import os
 import sys
 import unittest
 
-myDir = os.path.dirname(os.path.abspath(__file__))
-parentDir = os.path.split(myDir)[0]+"/src"
-if(sys.path.__contains__(parentDir)):
-    pass
-else:
-    sys.path.append(parentDir)
-
-from helpers.getZoneMapping import *
-from helpers.isRecordDangling import *
+# TODO: Figure out why imports need . prefix to work in GitHub Actions
+from .helpers.getZoneMapping import *
+from .helpers.isRecordDangling import *
 
 requiredAttributes = ["Type", "TTL", "Value"]
 

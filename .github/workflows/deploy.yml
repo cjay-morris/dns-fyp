@@ -23,12 +23,12 @@ jobs:
     - name: Install dependencies 📦
       run: |
         python3 -m pip install --upgrade pip
-        pip3 install -r requirements.txt
+        pip3 install -r src/requirements.txt
 
       # Create template.json
     - name: Create template.json 📝
       run: |
-        python3 create-template.py
+        python3 src/create-template.py
 
       # Log into Azure
     - name: Log into Azure 🌐
@@ -43,7 +43,7 @@ jobs:
         AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION }}
         AZURE_RESOURCE_GROUP: ${{ secrets.AZURE_RG }}
       run: |
-        python3 delete-records.py
+        python3 src/delete-records.py
 
       # Deploy ARM template 🚀
     - name: Run ARM deploy
