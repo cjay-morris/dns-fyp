@@ -2,8 +2,9 @@ import os
 import sys
 import unittest
 
-from helpers.getZoneMapping import *
-from helpers.isRecordDangling import *
+# TODO: Figure out why imports need . prefix to work in GitHub Actions
+from .helpers.getZoneMapping import *
+from .helpers.isRecordDangling import *
 
 requiredAttributes = ["Type", "TTL", "Value"]
 
