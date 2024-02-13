@@ -31,7 +31,7 @@ jobs:
     - name: Conduct tests 🧪
       id: test
       run: |
-        python3 -u -m unittest src/tests.py
+        python3 -u -m unittest src/tests.py -v
 
       # Comment on issue
     # - name: Comment on issue 📝
