@@ -26,6 +26,13 @@ def deleteAllRecordsNotInMapping():
     zoneMapping = getZoneMapping()
     for zoneName in zoneMapping:
         records = getAllRecords(zoneName)
+        # TODO: Refactor new zone check to be less hack-y
+        try:
+            records = list(records)
+        except Exception as e:
+            print(e)
+            print("Zone", zoneName, "does not exist in Azure. Skipping.")
+            continue
         for record in records:
             if record.name not in zoneMapping[zoneName]:
                 print("Deleting", record.name, record.type.split("/")[2])
