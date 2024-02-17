@@ -17,14 +17,14 @@ def createZone(zoneName):
     )
     return zoneTemplate
 
-def ARecordToIPV4Array(recordValues):
-    if type(recordValues) == str:
-        recordValues = [{"ipv4Address": recordValues}]
-    else:
-        recordValue = []
-        for recordValue in recordValues:
-            recordValue.append({"ipv4Address": recordValue})
-    return json.dumps(recordValues)
+def recordsToArray(recordValues):
+    recordArray = []
+    for value in recordValues.split(" "):
+        recordArray.append({
+            "ivp4Address": value
+        })
+    return json.dumps(recordArray)
+        
 
 def createRecord(zoneName, recordName, recordValue, recordType, ttl=300):
     if recordType == "A":
@@ -37,6 +37,14 @@ def createRecord(zoneName, recordName, recordValue, recordType, ttl=300):
         )
     elif recordType == "CNAME":
         recordTemplate = cnameTemplate.render(
+            recordName=zoneName+"/"+recordName,
+            recordValue=recordValue,
+            ttl=ttl,
+            zoneName=zoneName,
+            recordType=recordType
+        )
+    elif recordType == "NS":
+        recordTemplate = nsTemplate.render(
             recordName=zoneName+"/"+recordName,
             recordValue=recordValue,
             ttl=ttl,

@@ -69,5 +69,7 @@ class TestRecords(unittest.TestCase):
                 recordObj = mapping[domain][record]
                 self.assertTrue(recordObj["TTL"] > 0, domain + " has an invalid TTL: " + str(recordObj["TTL"]))
 
+    # TODO: Add test for different IP addresses in A record
+
 if __name__ == "__main__":
     unittest.main()
