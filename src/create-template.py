@@ -8,6 +8,7 @@ env = Environment(loader=FileSystemLoader("templates/"))
 dnsTemplate = env.get_template("dns-zone.txt")
 cnameTemplate = env.get_template("cname.txt")
 aTemplate = env.get_template("a.txt")
+nsTemplate = env.get_template("ns.txt")
 jsonTemplate = env.get_template("template.txt")
 templateString = []
 
@@ -17,11 +18,11 @@ def createZone(zoneName):
     )
     return zoneTemplate
 
-def recordsToArray(recordValues):
+def recordsToArray(recordValues, attributeName):
     recordArray = []
     for value in recordValues.split(" "):
         recordArray.append({
-            "ivp4Address": value
+            attributeName: value
         })
     return json.dumps(recordArray)
         
@@ -30,7 +31,7 @@ def createRecord(zoneName, recordName, recordValue, recordType, ttl=300):
     if recordType == "A":
         recordTemplate = aTemplate.render(
             recordName=zoneName+"/"+recordName,
-            ipvFourArray=ARecordToIPV4Array(recordValue),
+            ipvFourArray=recordsToArray(recordValue, "ipv4Address"),
             ttl=ttl,
             zoneName=zoneName,
             recordType=recordType
@@ -46,7 +47,7 @@ def createRecord(zoneName, recordName, recordValue, recordType, ttl=300):
     elif recordType == "NS":
         recordTemplate = nsTemplate.render(
             recordName=zoneName+"/"+recordName,
-            recordValue=recordValue,
+            nsRecordArray=recordsToArray(recordValue, "nsdname"),
             ttl=ttl,
             zoneName=zoneName,
             recordType=recordType
@@ -65,6 +66,9 @@ def makeTemplate(zoneMapping):
                 recordTemplate = createRecord(zoneName, recordName, recordValue["Value"], recordType)
                 templateString.append(recordTemplate)
             elif recordType == "CNAME":
+                recordTemplate = createRecord(zoneName, recordName, recordValue["Value"], recordType)
+                templateString.append(recordTemplate)
+            elif recordType == "NS":
                 recordTemplate = createRecord(zoneName, recordName, recordValue["Value"], recordType)
                 templateString.append(recordTemplate)
     return templateString
