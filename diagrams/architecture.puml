@@ -1,0 +1,38 @@
+@startuml
+actor User
+actor Admin
+
+participant GitHub as "GitHub"
+participant GitHubActions as "GitHub Actions"
+participant Azure as Azure
+participant resourceGroup as "Resource Group"
+
+User -> User : create DNS records in local env
+User -> GitHub : push code to GitHub
+User -> GitHub : create pull request
+GitHub -> GitHubActions : run tests
+
+alt "Tests passed"
+    GitHubActions -> GitHub : tests passed
+    Admin -> GitHub : approve pull request
+    GitHub -> GitHubActions : merge pull request; trigger deployment
+    GitHubActions -> Azure : deploy to Azure
+    Azure -> resourceGroup : create resources
+    alt "DNS records created"
+        resourceGroup -> Azure : records and zones created
+        Azure -> GitHubActions : deployment successful
+        GitHubActions -> GitHub : deployment successful
+        GitHub -> User : celebrate
+    else "DNS records not created"
+        resourceGroup -> Azure : records and zones not created
+        Azure -> GitHubActions : deployment failed
+        GitHubActions -> GitHub : deployment failed
+        GitHub -> User : fix code / remediate DNS records
+    end
+else "Tests failed"
+    GitHubActions -> GitHub : tests failed
+    GitHub -> User : fix code / remediate dangling DNS records
+end
+
+
+@enduml
