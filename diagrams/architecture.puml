@@ -1,38 +1,39 @@
 @startuml
-actor User
-actor Admin
 
-participant GitHub as "GitHub"
-participant GitHubActions as "GitHub Actions"
-participant Azure as Azure
-participant resourceGroup as "Resource Group"
+together {
+    actor User
+    actor Admin
+}
 
-User -> User : create DNS records in local env
-User -> GitHub : push code to GitHub
-User -> GitHub : create pull request
-GitHub -> GitHubActions : run tests
+folder GitHubRepository {
+    folder "src" {
+        file "create-template.py"
+        file "test.py"
+    }
+    folder "Workflows" {
+        file "deploy.yml"
+        file "test.yml"
+    }
+}
 
-alt "Tests passed"
-    GitHubActions -> GitHub : tests passed
-    Admin -> GitHub : approve pull request
-    GitHub -> GitHubActions : merge pull request; trigger deployment
-    GitHubActions -> Azure : deploy to Azure
-    Azure -> resourceGroup : create resources
-    alt "DNS records created"
-        resourceGroup -> Azure : records and zones created
-        Azure -> GitHubActions : deployment successful
-        GitHubActions -> GitHub : deployment successful
-        GitHub -> User : celebrate
-    else "DNS records not created"
-        resourceGroup -> Azure : records and zones not created
-        Azure -> GitHubActions : deployment failed
-        GitHubActions -> GitHub : deployment failed
-        GitHub -> User : fix code / remediate DNS records
-    end
-else "Tests failed"
-    GitHubActions -> GitHub : tests failed
-    GitHub -> User : fix code / remediate dangling DNS records
-end
+process "Pull Request" as PR
+process "GitHub Actions" as GHA
 
+cloud Azure {
+    folder "Resource Group" {
+        collections "DNS Zones"
+    }
+}
 
+User -> PR : Create
+Admin -d-> PR : Review
+GHA -d-> "test.yml" : Run
+"test.yml" -d-> "test.py" : Run
+PR -> Admin : Notify
+Admin -d-> PR : Merge
+PR -d-> GitHubRepository : Merge
+PR -> GHA : Trigger
+GHA -d-> "deploy.yml" : Run
+"deploy.yml" -d-> "create-template.py" : Run
+"deploy.yml" -d-> "Resource Group" : Deploy
 @enduml
