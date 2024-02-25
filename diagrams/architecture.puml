@@ -1,0 +1,39 @@
+@startuml
+
+together {
+    actor User
+    actor Admin
+}
+
+folder GitHubRepository {
+    folder "src" {
+        file "create-template.py"
+        file "test.py"
+    }
+    folder "Workflows" {
+        file "deploy.yml"
+        file "test.yml"
+    }
+}
+
+process "Pull Request" as PR
+process "GitHub Actions" as GHA
+
+cloud Azure {
+    folder "Resource Group" {
+        collections "DNS Zones"
+    }
+}
+
+User -> PR : Create
+Admin -d-> PR : Review
+GHA -d-> "test.yml" : Run
+"test.yml" -d-> "test.py" : Run
+PR -> Admin : Notify
+Admin -d-> PR : Merge
+PR -d-> GitHubRepository : Merge
+PR -> GHA : Trigger
+GHA -d-> "deploy.yml" : Run
+"deploy.yml" -d-> "create-template.py" : Run
+"deploy.yml" -d-> "Resource Group" : Deploy
+@enduml
