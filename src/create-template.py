@@ -1,9 +1,8 @@
 import os
 import json
 import yaml
-from helpers.record import DNSRecord
 from jinja2 import Environment, FileSystemLoader
-from helpers.getZoneMapping import getArrayOfDNSRecords
+from helpers.getZoneMapping import *
 
 env = Environment(loader=FileSystemLoader("templates/"))
 # run get_template on all files in the templates directory
@@ -124,8 +123,11 @@ def makeTemplate(records):
     return templateString
 
 if __name__ == "__main__":
+    zoneNames = getZoneNames()
     records = getArrayOfDNSRecords()
     template = makeTemplate(records)
+    for zoneName in zoneNames:
+        template.append(createZone(zoneName))
     template = ",".join(template)
     with open("template.json", "w") as f:
         renderedTemplate = jsonTemplate.render(resources=template)

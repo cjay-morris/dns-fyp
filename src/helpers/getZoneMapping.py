@@ -22,6 +22,12 @@ def getZoneMapping():
                 zoneMapping[zoneName][record.replace(".yml", "")] = yamlObj
     return zoneMapping
 
+def getZoneNames():
+    zoneNames = []
+    for zoneName in os.listdir("zones"):
+        zoneNames.append(zoneName)
+    return zoneNames
+
 def getDomainNames():
     domainNames = []
     for zoneName in os.listdir("zones"):
