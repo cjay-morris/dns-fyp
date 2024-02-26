@@ -1,0 +1,9 @@
+Type:
+  MX
+Value:
+  - preference: 10
+    exchange: mail.fyp.cmorris.dev
+  - preference: 20
+    exchange: mail2.fyp.cmorris.dev
+TTL:
+  3000

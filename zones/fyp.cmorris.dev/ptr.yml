@@ -1,0 +1,7 @@
+Type:
+  PTR
+Value:
+  - cmorris.dev
+  - cmorris2.dev
+TTL:
+  3000

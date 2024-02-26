@@ -1,0 +1,11 @@
+Type:
+  CAA
+Value:
+  - flags: 0
+    tag: issue
+    value: "letsencrypt.org"
+  - flags: 0
+    tag: issuewild
+    value: "letsencrypt2.org"
+TTL:
+  3000
