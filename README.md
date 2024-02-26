@@ -1,4 +1,4 @@
-# dns-fyp
+# dns-fyp 🌐
 
 [![Tests](https://github.com/cjay-morris/dns-fyp/actions/workflows/tests.yml/badge.svg)](https://github.com/cjay-morris/dns-fyp/actions/workflows/tests.yml)
 [![Azure ARM Deploy](https://github.com/cjay-morris/dns-fyp/actions/workflows/deploy.yml/badge.svg)](https://github.com/cjay-morris/dns-fyp/actions/workflows/deploy.yml)
