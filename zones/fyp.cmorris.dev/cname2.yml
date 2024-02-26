@@ -1,6 +1,6 @@
 Type:
   CNAME 
 Value:
-  mywebapp.azurewebsites.net
+  cname.fyp.cmorris.dev
 TTL:
   3000

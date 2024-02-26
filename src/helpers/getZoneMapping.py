@@ -1,5 +1,15 @@
 import os
 import yaml
+from .record import DNSRecord
+
+def getArrayOfDNSRecords():
+    zoneMapping = getZoneMapping()
+    arrayOfDNSRecords = []
+    for zoneName in zoneMapping:
+        for recordName in zoneMapping[zoneName]:
+            record = DNSRecord(zoneMapping[zoneName][recordName], zoneName, recordName)
+            arrayOfDNSRecords.append(record)
+    return arrayOfDNSRecords
 
 def getZoneMapping():
     zoneMapping = {}
