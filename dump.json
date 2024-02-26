@@ -1,16 +1,15 @@
-{{
+{
     "type": "Microsoft.Network/dnsZones",
     "apiVersion": "2018-05-01",
     "name": "cmorris.dev",
     "location": "global"
-},
-{
+},{
     "type": "Microsoft.Network/dnsZones/NS",
     "apiVersion": "2018-05-01",
     "name": "fyp",
     "properties": {
         "TTL": 1800,
-        "NSRecords": [{'nsdname': 'ns1.fyp.cmorris.dev'}, {'nsdname': 'ns2.fyp.cmorris.dev'}, {'nsdname': 'ns3.fyp.cmorris.dev'}]
+        "NSRecords": [{"nsdname": "ns1.fyp.cmorris.dev ns2.fyp.cmorris.dev ns3.fyp.cmorris.dev"}]
     },
     "dependsOn": [
         "[resourceId('Microsoft.Network/dnsZones', 'cmorris.dev')]"
@@ -21,7 +20,7 @@
     "name": "@",
     "properties": {
         "TTL": 600,
-        "ARecords": [{'ipv4Address': '76.76.21.21'}]
+        "ARecords": [{"ipv4Address": "76.76.21.21"}]
     },
     "dependsOn": [
         "[resourceId('Microsoft.Network/dnsZones', 'cmorris.dev')]"
@@ -50,7 +49,7 @@
     "name": "@",
     "properties": {
         "TTL": 3000,
-        "ARecords": [{'ipv4Address': '192.168.0.24'}]
+        "ARecords": [{"ipv4Address": "192.168.0.24"}]
     },
     "dependsOn": [
         "[resourceId('Microsoft.Network/dnsZones', 'fyp.cmorris.dev')]"
@@ -74,10 +73,9 @@
     "name": "mx",
     "properties": {
         "TTL": 3000,
-        "MXRecords": [{'preference': 10}, {'exchange': 'mail.fyp.cmorris.dev'}, {'preference': 20}, {'exchange': 'mail2.fyp.cmorris.dev'}],
+        "MXRecords": [{"preference": 10, "exchange": "mail.fyp.cmorris.dev"}, {"preference": 20, "exchange": "mail2.fyp.cmorris.dev"}]
     },
     "dependsOn": [
         "[resourceId('Microsoft.Network/dnsZones', 'fyp.cmorris.dev')]"
     ]
-}
 }

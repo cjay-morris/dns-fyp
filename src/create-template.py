@@ -14,6 +14,7 @@ templateString = []
 def getTemplate(recordType):
     return env.get_template(recordType + ".txt")
 
+# set required templates
 dnsTemplate = env.get_template("dns-zone.txt")
 jsonTemplate = env.get_template("template.txt")
 
@@ -32,56 +33,51 @@ def recordsToArray(recordValues, attributeNames):
             for recordValue in recordValues:
                 recordArray.append({attributeNames: recordValue})
     else:
-        for recordValue in recordValues:
-            for attribute in attributeNames:
-                recordArray.append({attribute: recordValue[attribute]})
-    print(recordArray)
-    return recordArray
-        
+        recordArray = recordValues
+    # return json dump to ensure double quotes
+    return json.dumps(recordArray)
 
 def createRecord(record):
     if record.type == "A":
-        recordTemplate = getTemplate(record.type.lower()).render(
-            recordName=record.name,
-            ipvFourArray=recordsToArray(record.value if record.value else record.values, "ipv4Address"),
+        return getTemplate(record.type.lower()).render(
+            recordName=record.zoneName+"/"+record.name,
+            ipvFourArray=recordsToArray(record.value, "ipv4Address"),
             ttl=record.ttl,
             zoneName=record.zoneName,
             recordType=record.type
         )
     elif record.type == "CNAME":
-        recordTemplate = getTemplate(record.type.lower()).render(
-            recordName=record.name,
+        return getTemplate(record.type.lower()).render(
+            recordName=record.zoneName+"/"+record.name,
             recordValue=record.value,
             ttl=record.ttl,
             zoneName=record.zoneName,
             recordType=record.type
         )
     elif record.type == "NS":
-        recordTemplate = getTemplate(record.type.lower()).render(
-            recordName=record.name,
-            nsRecordArray=recordsToArray(record.value if record.value else record.values, "nsdname"),
+        return getTemplate(record.type.lower()).render(
+            recordName=record.zoneName+"/"+record.name,
+            nsRecordArray=recordsToArray(record.value, "nsdname"),
             ttl=record.ttl,
             zoneName=record.zoneName,
             recordType=record.type
         )
     elif record.type == "MX":
-        recordTemplate = getTemplate(record.type.lower()).render(
-            recordName=record.name,
-            mxRecordArray=recordsToArray(record.mxRecords, ["preference", "exchange"]),
+        return getTemplate(record.type.lower()).render(
+            recordName=record.zoneName+"/"+record.name,
+            mxRecordArray=recordsToArray(record.value, ["preference", "exchange"]),
             ttl=record.ttl,
             zoneName=record.zoneName,
             recordType=record.type
         )
     elif record.type == "TXT":
-        recordTemplate = getTemplate(record.type.lower()).render(
-            recordName=record.name,
+        return getTemplate(record.type.lower()).render(
+            recordName=record.zoneName+"/"+record.name,
             txtRecordArray=recordsToArray(record.value, "txtData"),
             ttl=record.ttl,
             zoneName=record.zoneName,
             recordType=record.type
         )
-    print(recordTemplate)
-    return recordTemplate
 
 def makeTemplate(zoneMapping):
     templateString = []
@@ -98,7 +94,5 @@ if __name__ == "__main__":
     template = makeTemplate(mapping)
     template = ",".join(template)
     with open("template.json", "w") as f:
-        with open("dump.json", "w") as d:
-            d.write(template)
         renderedTemplate = jsonTemplate.render(resources=template)
         json.dump(json.loads(renderedTemplate), f, indent=4)

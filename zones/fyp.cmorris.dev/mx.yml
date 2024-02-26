@@ -1,6 +1,6 @@
 Type:
   MX
-MXRecords:
+Value:
   - preference: 10
     exchange: mail.fyp.cmorris.dev
   - preference: 20

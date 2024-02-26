@@ -1,35 +1,40 @@
 class DNSRecord:
+    """
+    A dynamic class to represent a DNS record of any type.
+
+    Attributes:
+        name (str): The hostname of the DNS record.
+        type (str): The type of DNS record (e.g., "A", "CNAME", "MX").
+        value (str or dict): The value of the DNS record, which can be a string or a list of strings depending on the type.
+        ttl (int, optional): The time to live of the DNS record in seconds. Defaults to 3600 (1 hour).
+    """
+
     def __init__(self, recordObject, zoneName, recordName):
-        # required fields
-        self.type = recordObject['Type']
+        """
+        The constructor for the DNSRecord class.
+
+        Args:
+            recordObject (dict): A dictionary representing a DNS record.
+            zoneName (str): The name of the DNS zone.
+            recordName (str): The name of the DNS record.
+        """
         self.name = recordName
-        self.ttl = recordObject['TTL']
+        self.type = recordObject["Type"]
+        self.value = recordObject["Value"]
+        self.ttl = recordObject.get("TTL", 3600)
         self.zoneName = zoneName
 
-        # optional fields
-        self.preference = recordObject.get('preference', None)
-        self.exchange = recordObject.get('exchange', None)
-        self.value = recordObject.get('Value', None)
-        self.mxRecords = recordObject.get('MXRecords', None)
-        self.values = recordObject.get('Values', None)
+    def name(self):
+        return self.name
     
     def type(self):
         return self.type
     
-    def name(self):
-        return self.name
-    
     def value(self):
-        return self.value
-    
-    def values(self):
         return self.value
     
     def ttl(self):
         return self.ttl
-    
+
     def zoneName(self):
         return self.zoneName
-    
-    def mxRecords(self):
-        return self.mxRecords

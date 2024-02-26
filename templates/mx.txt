@@ -4,7 +4,7 @@
     "name": "{{ recordName }}",
     "properties": {
         "TTL": {{ ttl }},
-        "MXRecords": {{ mxRecordArray }},
+        "MXRecords": {{ mxRecordArray }}
     },
     "dependsOn": [
         "[resourceId('Microsoft.Network/dnsZones', '{{ zoneName }}')]"
