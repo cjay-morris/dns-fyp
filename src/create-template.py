@@ -37,6 +37,12 @@ def recordsToArray(recordValues, attributeNames):
     # return json dump to ensure double quotes
     return json.dumps(recordArray)
 
+def txtRecordToArray(recordValues):
+    recordArray = []
+    for recordValue in recordValues:
+        recordArray.append({"value": [recordValue]})
+    return json.dumps(recordArray)
+
 def createRecord(record):
     if record.type == "A":
         return getTemplate(record.type.lower()).render(
@@ -73,7 +79,7 @@ def createRecord(record):
     elif record.type == "TXT":
         return getTemplate(record.type.lower()).render(
             recordName=record.zoneName+"/"+record.name,
-            txtRecordArray=recordsToArray([record.value], "value"),
+            txtRecordArray=txtRecordToArray(record.value),
             ttl=record.ttl,
             zoneName=record.zoneName,
             recordType=record.type
