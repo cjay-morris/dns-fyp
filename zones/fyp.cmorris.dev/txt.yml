@@ -1,0 +1,7 @@
+Type:
+  TXT
+Value:
+  - hola
+  - adios
+TTL:
+  3000

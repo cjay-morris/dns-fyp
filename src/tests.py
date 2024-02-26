@@ -1,13 +1,11 @@
 import os
 import sys
 import unittest
-
-# TODO: Figure out why imports need . prefix to work in GitHub Actions
 from .helpers.getZoneMapping import *
 from .helpers.isRecordDangling import *
 
 requiredAttributes = ["Type", "TTL", "Value"]
-supportedRecordTypes = ["A", "CNAME", "MX", "NS", "PTR", "SOA", "SRV", "TXT"]
+supportedRecordTypes = ["A", "AAAA", "CAA", "CNAME", "MX", "NS", "PTR", "SRV", "TXT"]
 
 def hasRequiredAttributes(obj):
     for attribute in requiredAttributes:

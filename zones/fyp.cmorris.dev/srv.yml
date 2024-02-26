@@ -1,0 +1,13 @@
+Type:
+  SRV
+Value:
+  - priority: 10
+    weight: 5
+    port: 80
+    target: fyp.cmorris.dev
+  - priority: 20
+    weight: 10
+    port: 80
+    target: fyp2.cmorris.dev
+TTL:
+  3000

@@ -78,6 +78,38 @@ def createRecord(record):
             zoneName=record.zoneName,
             recordType=record.type
         )
+    elif record.type == "AAAA":
+        return getTemplate(record.type.lower()).render(
+            recordName=record.zoneName+"/"+record.name,
+            ipvSixArray=recordsToArray(record.value, "ipv6Address"),
+            ttl=record.ttl,
+            zoneName=record.zoneName,
+            recordType=record.type
+        )
+    elif record.type == "SRV":
+        return getTemplate(record.type.lower()).render(
+            recordName=record.zoneName+"/"+record.name,
+            srvArray=recordsToArray(record.value, ["priority", "weight", "port", "target"]),
+            ttl=record.ttl,
+            zoneName=record.zoneName,
+            recordType=record.type
+        )
+    elif record.type == "CAA":
+        return getTemplate(record.type.lower()).render(
+            recordName=record.zoneName+"/"+record.name,
+            caaArray=recordsToArray(record.value, ["flags", "tag", "value"]),
+            ttl=record.ttl,
+            zoneName=record.zoneName,
+            recordType=record.type
+        )
+    elif record.type == "PTR":
+        return getTemplate(record.type.lower()).render(
+            recordName=record.zoneName+"/"+record.name,
+            ptrArray=recordsToArray(record.value, "ptrdname"),
+            ttl=record.ttl,
+            zoneName=record.zoneName,
+            recordType=record.type
+        )
 
 def makeTemplate(zoneMapping):
     templateString = []
