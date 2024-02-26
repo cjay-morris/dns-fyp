@@ -73,7 +73,7 @@ def createRecord(record):
     elif record.type == "TXT":
         return getTemplate(record.type.lower()).render(
             recordName=record.zoneName+"/"+record.name,
-            txtRecordArray=recordsToArray(record.value, "value"),
+            txtRecordArray=recordsToArray([record.value], "value"),
             ttl=record.ttl,
             zoneName=record.zoneName,
             recordType=record.type
