@@ -32,7 +32,17 @@ def isAnIPV4Address(value):
     Returns:
         bool: True if the string is a valid IPv4 address, False otherwise.
     """
-    return (value.count(".") == 3) & (all(i.isdigit() for i in value.split(".")))
+
+    groups = value.split(".")
+
+    if len(groups) != 4:
+        return False
+
+    for group in groups:
+        if not group.isdigit() or int(group) > 255 or int(group) < 0:
+            return False
+
+    return True
 
 def isAnIPV6Address(value):
     """
