@@ -12,9 +12,9 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-
       # Checkout code
-    - uses: actions/checkout@main
+    - name: Checkout code 🛎️
+      uses: actions/checkout@main
 
     - name: Setup Python 🐍
       uses: actions/setup-python@v3
@@ -47,14 +47,11 @@ jobs:
       run: |
         python3 src/delete-records.py
 
-      # Deploy ARM template 🚀
-    - name: Run ARM deploy
+      # Deploy ARM template
+    - name: Run ARM deploy 🚀
       uses: azure/arm-deploy@v1
       with:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: ${{ secrets.AZURE_RG }}
         template: template.json
         deploymentMode: Complete
-
-      # output containerName variable from template
-    - run: echo ${{ steps.deploy.outputs.containerName }}
