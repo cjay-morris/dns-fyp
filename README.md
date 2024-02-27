@@ -5,6 +5,14 @@
 
 An Infrastructure-as-Code repository for creating DNS records in Azure. This repository was created for DNS administrators, with the prevention and detection of CNAME-based and NS-based subdomain takeovers in mind.
 
+- [Getting Started](#getting-started-)
+- [What is a subdomain takeover?](#what-is-a-subdomain-takeover-)
+  - [Example of CNAME-based subdomain takeover](#example-of-cname-based-subdomain-takeover-)
+  - [What are Cloud Providers doing to combat subdomain takeovers?](#what-are-cloud-providers-doing-to-combat-subdomain-takeovers-)
+- [Why Infrastructure-as-Code?](#why-infrastructure-as-code-)
+- [What Best Practices are implemented?](#what-best-practices-are-implemented-)
+- [Examples](#examples-)
+
 ## Getting Started 🚀
 
 TODO - repo structure, how to use, etc.
