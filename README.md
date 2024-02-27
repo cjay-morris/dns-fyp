@@ -5,6 +5,8 @@
 
 An Infrastructure-as-Code repository for creating DNS records in Azure. This repository was created for DNS administrators, with the prevention and detection of CNAME-based and NS-based subdomain takeovers in mind.
 
+## Contents 🔗
+
 - [Getting Started](#getting-started-)
 - [What is a subdomain takeover?](#what-is-a-subdomain-takeover-)
   - [Example of CNAME-based subdomain takeover](#example-of-cname-based-subdomain-takeover-)
@@ -19,11 +21,15 @@ TODO - repo structure, how to use, etc.
 
 Will be completed once project is released as a template.
 
+[🔝 Back to Top](#contents-)
+
 ## What is a subdomain takeover? 👨‍💻
 
 A subdomain takeover is where an attacker gains control of a subdomain of a domain that they do not own.
 
 Often, this is done by exploiting a misconfigured DNS record, such as a CNAME record pointing to a service that was deprovisioned.
+
+[🔝 Back to Top](#contents-)
 
 ### Example of CNAME-based subdomain takeover 📝
 
@@ -35,6 +41,8 @@ At any point from the deletion of the Web App, an attacker can register a Web Ap
 
 This is because many Cloud Providers release domain names back into the pool of available names after they are deleted and users are allowed to choose their app names.
 
+[🔝 Back to Top](#contents-)
+
 ### What are Cloud Providers doing to combat subdomain takeovers? 🤔
 
 Recently, Cloud Providers have started to implement measures to prevent subdomain takeovers.
@@ -44,6 +52,8 @@ For newer resources, Azure has started using semi-random domain names for their 
 Other Azure resources have also started to require domain verification, typically adding a TXT record to the domain to prove ownership.
 
 Although these services take a step in the right direction, there are still many widely-used services that do not protect users from subdomain takeovers.
+
+[🔝 Back to Top](#contents-)
 
 ## Why Infrastructure-as-Code? ⚙
 
@@ -58,10 +68,16 @@ There are many benefits to IaC over traditional, manual infrastructure managemen
 - **Automated Deployment** - Infrastructure code can be deployed automatically, saving time and again reducing the chance of human error
 - **Collaboration** - Infrastructure code can be reviewed and collaborated on by multiple people
 
+[🔝 Back to Top](#contents-)
+
 ## What Best Practices are implemented? 💡
 
 TODO - what tests are run, how subdomain takeover detection works, etc.
 
+[🔝 Back to Top](#contents-)
+
 ## Examples 📚
 
 TODO - will include examples of how to use the repository (record types, yml format)
+
+[🔝 Back to Top](#contents-)
